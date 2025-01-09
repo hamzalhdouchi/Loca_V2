@@ -91,3 +91,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['deletLike'])) {
     </form>
 </div>
 
+<div class="flex items-center justify-center space-x-4">
+    <form action="" method="POST">
+        <input type="hidden" name="id_user" value="<?= $idU ?>">
+        <input type="hidden" name="id_Article" value="<?= $idA ?>">
+        <?php if (!$likes): ?>
+            <input type="hidden" name="like" value="1">
+            <button type="submit" name="likeButton" class="flex items-center bg-red-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-red-600 transition">
+                <i class="fa fa-heart mr-2"></i> Like
+            </button>
+        <?php elseif ($likes['favorite'] == 1): ?>
+            <form action="" method="POST">
+                <input type="hidden" name="likess" value="<?= $likes['id'] ?>">
+                <button type="submit" name="deletLike" class="flex items-center bg-white text-red-500 font-semibold py-2 px-4 rounded-lg hover:bg-red-600 transition">
+                    <i class="fa fa-heart mr-2"></i> Unlike
+                </button>
+            </form>
+        <?php endif; ?>
+    </form>
+</div>
+
