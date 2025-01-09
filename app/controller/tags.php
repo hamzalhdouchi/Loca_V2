@@ -43,5 +43,29 @@ class Tags {
         }
     }
     
+    public function ModiferTage($id){
+        $sql = "SELECT * FROM tag WHERE id = :id";
+        $stmt = $this->connect->prepare($sql);
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result;
+    }
+    
+    public function Modifer($id, $name) {
+        $sql = "UPDATE tag SET name = :name WHERE id = :id";
+    
+        $stmt = $this->connect->prepare($sql);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->bindParam(':name', $name, PDO::PARAM_STR);
+    
+        if ($stmt->execute()) {
+            echo 'Modification réussie';
+            header("Location: ../views/tagAdmiun.php");
+        } else {
+            echo 'Échec de la modification';
+        }
+    }
+    
 }
 
