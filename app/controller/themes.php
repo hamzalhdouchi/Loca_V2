@@ -20,4 +20,12 @@ class themes{
         return $themes;
     }
     
+    public function DeletTemes($id){
+        $sql = "DELETE FROM theme WHERE id = :id";
+    
+        $stmt = $this->connect->prepare($sql);
+        $stmt->bindParam(':id',$id);
+        $stmt->execute();
+    }
+    
 }
