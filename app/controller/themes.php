@@ -28,4 +28,27 @@ class themes{
         $stmt->execute();
     }
     
+
+    public function AjouterTheme($idCont, $postdata){
+        $sql = "INSERT INTO theme(name, description, created_Date) VALUES (:name,:description,:date)";
+    
+        for ($i = 0; $i <= $idCont; $i++) {
+    
+            $name = trim($postdata["name_$i"]);
+            $description = trim($postdata["description_$i"]);
+            $date = trim($postdata["created_date_$i"]);
+    
+            $stmt = $this->connect->prepare($sql);
+    
+            $stmt->bindParam(':name', $name, PDO::PARAM_STR);
+            $stmt->bindParam(':description', $description, PDO::PARAM_STR);
+            $stmt->bindParam(':date', $date, PDO::PARAM_STR);
+            if ($stmt->execute()) {
+                echo 'Theme ajouté avec succès';
+            } else {
+                echo 'Erreur lors de l\'ajout du thème';
+            }
+        }
+    }
+    
 }
