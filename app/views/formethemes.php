@@ -30,4 +30,22 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST' && isset($_POST['ModifierTheme'])) {
 <div class="bg-gradient-to-br from-gray-100 to-gray-300 p-8 rounded-lg shadow-lg max-w-[50vw] mx-auto">
     <h2 class="text-2xl font-semibold text-center text-gray-800 mb-6">Ajouter une Theme</h2>
     <form action="./themeAdmin.php" method="POST" class="space-y-4 w-[40vw] h-[50vh] overflow-y-auto p-4 bg-gray-100 rounded-lg" enctype="multipart/form-data">
+    <div id="formTheme">
+    <input type="hidden" name='id_T' value="<?= $idT ?>">
+
+    <div class="relative">
+        <label for="name_0" class="text-xs font-medium text-gray-600">Nom</label>
+        <input type="text" name="name" id="name_0" value="<?=htmlspecialchars($result['name'])?>" class="block w-full mt-1 px-3 py-1 text-sm bg-white border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none focus:border-blue-500" placeholder="Entrez le nom" required />
+    </div>
+
+    <div class="relative">
+        <label for="description_0" class="text-xs font-medium text-gray-600">Description</label>
+        <textarea name="description" id="description_0" rows="3" class="block w-full mt-1 px-3 py-1 text-sm bg-white border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none focus:border-blue-500" placeholder="Ajoutez une description" required><?= htmlspecialchars($result['description'], ENT_QUOTES, 'UTF-8') ?></textarea>
+    </div>
+
+    <div class="relative">
+        <label for="created_date_0" class="text-xs font-medium text-gray-600">Date de Création</label>
+        <input type="date" name="created_date" id="created_date_0" value="<?= htmlspecialchars($result['created_Date']) ?>" class="block w-full mt-1 px-3 py-1 text-sm bg-white border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none focus:border-blue-500" required />
+    </div>
+</div>
 
