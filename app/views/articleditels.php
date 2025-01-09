@@ -68,3 +68,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['deletLike'])) {
     <p class="text-gray-600 mb-4"><?= $SpicialArticle['content'] ?></p>
 </div>
 
+<div class="mt-6">
+    <h3 class="text-2xl font-semibold text-gray-900 mb-4">Comments</h3>
+    <div class="space-y-4">
+        <?php foreach($comment as $row): ?>
+        <div class="flex items-start space-x-4">
+            <img src="./public/img/gallery/4.jpg" alt="Commenter" class="w-10 h-10 rounded-full">
+            <div>
+                <span class="font-semibold text-gray-900"><?= $row['nom'] ?></span>
+                <p class="text-gray-700 mt-2"><?= $row['content'] ?></p>
+            </div>
+        </div>
+        <?php endforeach ?>
+    </div>
+</div>
+
