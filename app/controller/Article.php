@@ -15,4 +15,15 @@ class Article {
         return $Article;
     }
     
+    public function Setstatus($status, $id) {
+        $sql = "UPDATE article SET status = ? WHERE id = ?";
+        $stmt = $this->connect->prepare($sql);  
+    
+        if ($stmt->execute([$status, $id])) {  
+            echo 'Mise à jour réussie';
+        } else {
+            echo 'Échec de la mise à jour';
+        }
+    }
+    
 }
