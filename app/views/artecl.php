@@ -42,3 +42,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_car_theme'])) {
 </head>
 <body class="bg-gray-50">
 
+<header class="bg-blue-900 text-white py-3 px-6 shadow-md">
+    <div class="flex items-center justify-between">
+        <a href="./index.php" class="flex items-center">
+            <i class="fas fa-car-side text-2xl text-white mr-2"></i>
+            <h1 class="text-2xl font-bold tracking-wide">Car Blog</h1>
+        </a>
+        <nav class="flex items-center space-x-6 text-sm font-medium">
+            <a href="./them.php" class="hover:text-yellow-400">Themes</a>
+            <a href="#about" class="hover:text-yellow-400">About</a>
+            <a href="#contact" class="hover:text-yellow-400">Contact</a>
+        </nav>
+        <a href="./inde.php" class="bg-yellow-500 text-blue-900 py-2 px-4 rounded-lg">Explore Cars</a>
+    </div>
+</header>
+
+
