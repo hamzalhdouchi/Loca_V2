@@ -29,5 +29,14 @@ class Favorite {
         exit();
     }
 
-    
+    public function deletLike($id, $id_Article) {
+        $sql = "DELETE FROM favorite WHERE id = :id";
+        $stmt = $this->connect->prepare($sql);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        if ($stmt->execute()) {
+            var_dump('Suppression réussie');
+        }
+        header("Location: ../views/articleditels.php?id=$id_Article");
+        exit();
+    }
 }
