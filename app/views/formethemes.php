@@ -27,4 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST' && isset($_POST['ModifierTheme'])) {
 
 <body>
 <div id="modal" class="fixed inset-0 flex justify-center items-center bg-gray-900 bg-opacity-50 z-50">
+<div class="bg-gradient-to-br from-gray-100 to-gray-300 p-8 rounded-lg shadow-lg max-w-[50vw] mx-auto">
+    <h2 class="text-2xl font-semibold text-center text-gray-800 mb-6">Ajouter une Theme</h2>
+    <form action="./themeAdmin.php" method="POST" class="space-y-4 w-[40vw] h-[50vh] overflow-y-auto p-4 bg-gray-100 rounded-lg" enctype="multipart/form-data">
 
