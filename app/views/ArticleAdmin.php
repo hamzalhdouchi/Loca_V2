@@ -98,6 +98,19 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST' && isset($_POST['status'])) {
                         </tr>
                     </thead>
                     <tbody>
+                    <?php foreach ($result as $row) { ?>
+    <tr>
+        <td><?= htmlspecialchars($row['id']) ?></td>
+        <td>
+            <div class="client">
+                <div class="client-info">
+                    <h4><?= htmlspecialchars($row['title']) ?></h4>
+                </div>
+            </div>
+        </td>
+        <td><h4><?= htmlspecialchars($row['content']) ?></h4></td>
+        <td><?= htmlspecialchars($row['created_at']) ?></td>
+        <td>
 
 
 
