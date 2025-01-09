@@ -85,4 +85,28 @@ class Article {
     }
 }
 
+public function getArticleSpiciale($idA) {
+    $sql = "
+       SELECT 
+            article.*, 
+            GROUP_CONCAT(tag.name) AS tags
+        FROM 
+            article
+        LEFT JOIN 
+            articletag ON article.id = articletag.article_id
+        LEFT JOIN 
+            tag ON articletag.tag_id = tag.id
+        WHERE 
+            article.id = :id
+        GROUP BY 
+            article.id;
+    ";
+    $stmt = $this->connect->prepare($sql);
+    $stmt->bindParam(':id', $idA, PDO::PARAM_INT);
+    $stmt->execute();
+
+    $Article = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    return $Article;
+}
+
 }
