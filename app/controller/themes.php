@@ -10,4 +10,14 @@ class themes{
         $db = new Database();
         $this->connect = $db->getdatabase();
     }
+
+    public function getTemes(){
+        $sql = "SELECT * FROM theme";
+        $stmt = $this->connect->prepare($sql);
+        $stmt->execute();
+    
+        $themes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $themes;
+    }
+    
 }
