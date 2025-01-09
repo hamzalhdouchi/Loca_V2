@@ -100,3 +100,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_car_theme'])) {
         <?php endif; ?>
     </div>
 </div>
+
+<div id="carModal" class="fixed hidden inset-0 bg-gray-900 bg-opacity-50 justify-center items-center z-50">
+    <!-- Modal Content -->
+    <div class="bg-gradient-to-br from-blue-900 to-gray-800 p-8 rounded-lg shadow-lg max-w-[50vw] mx-auto">
+        <h2 class="text-3xl text-white font-semibold mb-4 text-center">Add Car Article</h2>
+        <form method="POST" enctype="multipart/form-data">
+            <!-- Form content here -->
+        </form>
+    </div>
+</div>
