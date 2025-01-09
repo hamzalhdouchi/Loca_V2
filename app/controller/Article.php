@@ -64,6 +64,15 @@ class Article {
             $stmt->bindParam(':idT', $idT);
             $stmt->bindParam(':image', $uploadFile);
             $stmt->execute();
+            $article_id = $this->connect->lastInsertId();
+            foreach($tags as $tag) {
+                $sql = "INSERT INTO articletag(article_id,tag_id) VALUES (:article_id,:tag_id)";
+                $stmt = $this->connect->prepare($sql);
+                $stmt->bindParam(':article_id', $article_id);
+                $stmt->bindParam(':tag_id', $tag);
+                $stmt->execute();
+            }
+
 
         }
     }    
