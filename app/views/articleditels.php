@@ -140,4 +140,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['PostComment'])) {
     </div>
 <?php endforeach; ?>
 
+<!-- Boutons améliorés -->
+<button type="submit" name="likeButton" class="flex items-center bg-red-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-red-600 transition">
+    <i class="fa fa-heart mr-2"></i> Like
+</button>
+<button type="submit" name="deletLike" class="flex items-center bg-white text-red-500 font-semibold py-2 px-4 rounded-lg hover:bg-red-600 transition">
+    <i class="fa fa-heart mr-2"></i> Unlike
+</button>
+
+<!-- Section des commentaires -->
+<div class="space-y-4">
+    <?php foreach ($comment as $row): ?>
+        <div class="flex items-start space-x-4 bg-gray-100 p-4 rounded-lg">
+            <img src="./public/img/gallery/4.jpg" alt="Commenter" class="w-10 h-10 rounded-full">
+            <div>
+                <span class="font-semibold text-gray-900"><?= $row['nom'] ?></span>
+                <span class="font-semibold text-gray-900"><?= $row['prenom'] ?></span>
+                <p class="text-sm text-gray-600"><?= $row['created_at'] ?></p>
+                <p class="text-gray-700 mt-2"><?= $row['content'] ?></p>
+            </div>
+        </div>
+    <?php endforeach; ?>
+</div>
 
