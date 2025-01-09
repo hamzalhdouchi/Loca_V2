@@ -20,5 +20,13 @@ class Tags {
         return $tag;
     }
     
+    public function DeleteTage($id){
+        $sql = "DELETE FROM tag WHERE id = :id";
+    
+        $stmt = $this->connect->prepare($sql);
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+    }
+    
 }
 
