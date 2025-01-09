@@ -56,5 +56,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_car_theme'])) {
         <a href="./inde.php" class="bg-yellow-500 text-blue-900 py-2 px-4 rounded-lg">Explore Cars</a>
     </div>
 </header>
+<section class="relative bg-blue-900 text-white h-96">
+    <div class="absolute inset-0 bg-black opacity-50"></div>
+    <img src="./public/img/gallery/3.jpg" alt="Electric Car" class="w-full h-full object-cover">
+    <div class="absolute inset-0 flex items-center justify-center text-center px-6">
+        <div>
+            <h2 class="text-4xl font-bold mb-4">Welcome to the Future of Cars</h2>
+            <p class="text-lg mb-6">
+                Explore the latest innovations, reviews, and trends in the automotive world.
+            </p>
+            <button onclick="openModalBtn()" class="bg-yellow-500 text-blue-900 font-semibold py-2 px-6">Explore Articles</button>
+        </div>
+    </div>
+</section>
 
 
