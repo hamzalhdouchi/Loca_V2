@@ -24,4 +24,17 @@ class comment{
         return $comment;
     }
     
+
+    public function setComment($comment, $idU, $idA){
+        $sql = "INSERT INTO comment(content, author_id, article_id) VALUES (:comment, :idUser, :idArticle)";
+        $stmt = $this->connect->prepare($sql);
+        $stmt->bindParam(':comment', $comment);
+        $stmt->bindParam(':idUser', $idU);
+        $stmt->bindParam(':idArticle', $idA);
+        $stmt->execute();
+        
+        header("Location: ../views/articleditels.php?id=$idA");
+        exit();
+    }
+    
 }
