@@ -25,5 +25,28 @@ class Article {
             echo 'Échec de la mise à jour';
         }
     }
+    public function getArticleWithTags($limit, $offset) {
+        $sql = "
+           SELECT 
+                article.*, 
+                GROUP_CONCAT(tag.name) AS tags
+            FROM 
+                article
+            LEFT JOIN 
+                articletag ON article.id = articletag.article_id
+            LEFT JOIN 
+                tag ON articletag.tag_id = tag.id
+            GROUP BY 
+                article.id 
+            LIMIT :limit OFFSET :offset";
+            
+        $stmt = $this->connect->prepare($sql);
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+        $stmt->execute();
+        
+        $articles = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $articles;
+    }
     
 }
