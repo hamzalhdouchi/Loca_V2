@@ -37,6 +37,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['deletLike'])) {
     $idA = intval($_POST['id_Article']);
     $favorite->deletLike($like,$idA);
 }
+
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['PostComment'])) {
+    $comment = htmlspecialchars($_POST['comment']); // Protection contre XSS
+    $idA = intval($_POST['idA']);
+    $idU = intval($_POST['idU']);
+    $coment->setComment($comment, $idU, $idA);
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -130,4 +139,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['deletLike'])) {
         </div>
     </div>
 <?php endforeach; ?>
+
 
