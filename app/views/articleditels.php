@@ -63,3 +63,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['deletLike'])) {
     </div>
 </section>
 
+<div id="article-details" class=" bg-white rounded-lg shadow-lg mt-6 p-6">
+    <h2 class="text-3xl font-semibold text-gray-900 mb-4"><?= $SpicialArticle['title'] ?></h2>
+    <p class="text-gray-600 mb-4"><?= $SpicialArticle['content'] ?></p>
+</div>
+
