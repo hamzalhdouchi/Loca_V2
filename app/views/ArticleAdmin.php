@@ -84,6 +84,20 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST' && isset($_POST['status'])) {
                 </div>
             </div>
         </header>
+        <main>
+        <div class="page-content">
+            <div class="records table-responsive">
+                <table width="100%">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th><span class="las la-sort"></span> name</th>
+                            <th><span class="las la-sort"></span> discrption</th>
+                            <th><span class="las la-sort"></span>Date de creation</th>
+                            <th><span class="las la-sort"></span> ACTIONS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
 
 
 
