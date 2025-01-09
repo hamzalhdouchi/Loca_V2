@@ -36,5 +36,5 @@ class comment{
         header("Location: ../views/articleditels.php?id=$idA");
         exit();
     }
-    
 }
+
