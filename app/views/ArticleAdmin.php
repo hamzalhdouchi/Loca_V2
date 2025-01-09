@@ -111,6 +111,19 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST' && isset($_POST['status'])) {
         <td><h4><?= htmlspecialchars($row['content']) ?></h4></td>
         <td><?= htmlspecialchars($row['created_at']) ?></td>
         <td>
+        <?php if ($row['status'] == 2) { ?>
+    <span class="reserved-badge bg-gradient-to-r from-red-400 to-red-500 text-white px-4 py-1.5 rounded-full font-semibold shadow-md inline-block">
+        <form action="" method="POST">
+            <input type="hidden" name="id" value="<?= htmlspecialchars($row['id']) ?>">
+            <input type="hidden" value="0" name="stat">
+            <button class="w-full bg-transparent text-white font-semibold cursor-pointer" type="submit" name="status">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-5 w-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </form>
+    </span>
+<?php } ?>
 
 
 
