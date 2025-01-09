@@ -48,5 +48,15 @@ class Article {
         $articles = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $articles;
     }
-    
+    public function setArticle($idT, $title, $content, $image, $tags) {
+        if (isset($image) && $image['error'] === 0) {
+            $uploadDir = '../views/assets/img/';
+            $uploadFile = $uploadDir . basename($image['name']);
+            $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+            if (in_array($image['type'], $allowedTypes)) {
+                if (move_uploaded_file($image['tmp_name'], $uploadFile)) {
+                }
+            }
+        }
+    }    
 }
