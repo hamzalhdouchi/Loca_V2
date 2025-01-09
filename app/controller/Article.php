@@ -56,7 +56,7 @@ class Article {
             if (in_array($image['type'], $allowedTypes)) {
                 if (move_uploaded_file($image['tmp_name'], $uploadFile)) {
                 }
-            }
+            
             $sql = "INSERT INTO article(title, content, theme_id, images) VALUES (:title, :content, :idT, :image)";
             $stmt = $this->connect->prepare($sql);
             $stmt->bindParam(':title', $title);
@@ -71,11 +71,18 @@ class Article {
                 $stmt->bindParam(':article_id', $article_id);
                 $stmt->bindParam(':tag_id', $tag);
                 $stmt->execute();
+                header("Location: ../views/artecl.php");
+                exit();
+                echo "Article added successfully!";
+            }else{
+                echo "Failed to upload the image.";
             }
-
-
+        } else {
+            echo "Invalid file type. Only JPEG, PNG, and GIF are allowed.";
         }
-    }    
+    } else {
+        echo "No valid image provided.";
+    }
+}
 
-    
 }
