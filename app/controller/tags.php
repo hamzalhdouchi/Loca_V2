@@ -28,5 +28,20 @@ class Tags {
         $stmt->execute();
     }
     
+    public function AjouterTage($idCont, $postdata){
+        $sql = "INSERT INTO tag(name) VALUES (:name)";
+    
+        for ($i = 0; $i <= $idCont; $i++) {
+            $name = trim($postdata["tag_name_$i"]);
+            $stmt = $this->connect->prepare($sql);
+            $stmt->bindParam(':name', $name, PDO::PARAM_STR);
+            if ($stmt->execute()) {
+                echo 'Tag ajouté avec succès';
+            } else {
+                echo 'Erreur lors de l’ajout';
+            }
+        }
+    }
+    
 }
 
