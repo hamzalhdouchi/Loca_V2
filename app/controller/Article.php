@@ -109,4 +109,12 @@ public function getArticleSpiciale($idA) {
     return $Article;
 }
 
+
+public function countArticle() {
+    $sql = "SELECT COUNT(*) as total FROM article";
+    $stmt = $this->connect->query($sql);
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $result['total'];
+}
+
 }
