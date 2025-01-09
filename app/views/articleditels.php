@@ -52,3 +52,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['deletLike'])) {
 </head>
 
 <body class="bg-gray-50">
+<section class="relative bg-blue-900 text-white h-96">
+    <div class="absolute inset-0 bg-black opacity-50"></div>
+    <img src="./public/img/gallery/2.jpg" alt="Electric Car" class="w-full h-full object-cover">
+    <div class="absolute inset-0 flex items-center justify-center text-center px-6">
+        <div>
+            <h2 class="text-4xl font-bold mb-4">Welcome to the Future of Cars</h2>
+            <p class="text-lg mb-6">Explore the latest innovations, reviews, and trends in the automotive world.</p>
+        </div>
+    </div>
+</section>
+
