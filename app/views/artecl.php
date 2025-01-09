@@ -12,5 +12,10 @@ if ($currentPage < 1) $currentPage = 1;
 
 $limit = $itemsPerPage;
 $offset = ($currentPage - 1) * $itemsPerPage;
+$article = new Article();
+$articles = $article->getArticleWithTags($limit, $offset);
+
+$totalArticles = $article->countArticle(); 
+$totalPages = ceil($totalArticles / $itemsPerPage);
 
 ?>
