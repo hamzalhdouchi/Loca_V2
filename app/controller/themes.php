@@ -60,4 +60,15 @@ class themes{
         return $result;
     }
     
+    public function Modifer($id, $name, $description, $date){
+        $sql = "UPDATE theme SET name = :name , description = :description , created_date = :date WHERE id = :id";
+    
+        $stmt = $this->connect->prepare($sql);
+        $stmt->bindParam(':id', $id, PDO::PARAM_STR);
+        $stmt->bindParam(':name', $name, PDO::PARAM_STR);
+        $stmt->bindParam(':description', $description, PDO::PARAM_STR);
+        $stmt->bindParam(':date', $date, PDO::PARAM_STR); 
+        $stmt->execute();
+    }
+    
 }
