@@ -51,4 +51,13 @@ class themes{
         }
     }
     
+    public function ModiferTheme($id){
+        $sql = "SELECT * FROM theme WHERE id = :id";
+        $stmt = $this->connect->prepare($sql);
+        $stmt->bindParam(':id',$id);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result;
+    }
+    
 }
