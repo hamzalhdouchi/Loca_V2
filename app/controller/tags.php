@@ -10,5 +10,15 @@ class Tags {
         $db = new Database();
         $this->connect = $db->getdatabase();
     }
+    public function getTags(){
+        $sql = "SELECT * FROM Tag";
+        $stmt = $this->connect->prepare($sql);
+        $stmt->execute();
+    
+        $tag = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        return $tag;
+    }
+    
 }
 
