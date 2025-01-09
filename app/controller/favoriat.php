@@ -18,5 +18,16 @@ class Favorite {
         $likes = $stmt->fetch(PDO::FETCH_ASSOC);
         return $likes;
     }
+    public function likeSet($id_user, $id_Article, $like) {
+        $sql = "INSERT INTO favorite(article_id, client_id, favorite) VALUES (:article_id, :client_id, :favorite)";
+        $stmt = $this->connect->prepare($sql);
+        $stmt->bindParam(':article_id', $id_Article, PDO::PARAM_INT);
+        $stmt->bindParam(':client_id', $id_user, PDO::PARAM_INT);
+        $stmt->bindParam(':favorite', $like, PDO::PARAM_INT);
+        $stmt->execute();
+        header("Location: ../views/articleditels.php?id=$id_Article");
+        exit();
+    }
 
+    
 }
