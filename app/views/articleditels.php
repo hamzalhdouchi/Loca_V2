@@ -83,3 +83,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['deletLike'])) {
     </div>
 </div>
 
+<div class="mt-8">
+    <form action="" method="POST">
+        <input type="hidden" name="idA" value="<?= $SpicialArticle['id'] ?>">
+        <textarea name="comment" class="w-full p-4 border border-gray-300 rounded-lg" rows="4" placeholder="Write your comment..."></textarea>
+        <button type="submit" name="PostComment" class="mt-4 bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg">Post Comment</button>
+    </form>
+</div>
+
