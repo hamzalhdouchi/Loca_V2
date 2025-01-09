@@ -57,6 +57,16 @@ class Article {
                 if (move_uploaded_file($image['tmp_name'], $uploadFile)) {
                 }
             }
+            $sql = "INSERT INTO article(title, content, theme_id, images) VALUES (:title, :content, :idT, :image)";
+            $stmt = $this->connect->prepare($sql);
+            $stmt->bindParam(':title', $title);
+            $stmt->bindParam(':content', $content);
+            $stmt->bindParam(':idT', $idT);
+            $stmt->bindParam(':image', $uploadFile);
+            $stmt->execute();
+
         }
     }    
+
+    
 }
