@@ -110,4 +110,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['deletLike'])) {
         <?php endif; ?>
     </form>
 </div>
+<!-- Tags dynamiques -->
+<div class="flex flex-wrap gap-2 mb-4">
+    <?php $tags = explode(',', $SpicialArticle['tags']); ?>
+    <?php foreach ($tags as $tag): ?>
+        <span class="bg-gray-500 text-white text-xs font-semibold px-3 py-1 rounded-full"><?= $tag ?></span>
+    <?php endforeach; ?>
+</div>
+
+<!-- Affichage des commentaires -->
+<?php foreach ($comment as $row): ?>
+    <div class="flex items-start space-x-4">
+        <img src="./public/img/gallery/4.jpg" alt="Commenter" class="w-10 h-10 rounded-full">
+        <div>
+            <span class="font-semibold text-gray-900"><?= $row['nom'] ?></span>
+            <span class="font-semibold text-gray-900"><?= $row['prenom'] ?></span>
+            <p class="text-sm text-gray-600"><?= $row['created_at'] ?></p>
+            <p class="text-gray-700 mt-2"><?= $row['content'] ?></p>
+        </div>
+    </div>
+<?php endforeach; ?>
 
