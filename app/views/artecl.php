@@ -71,3 +71,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_car_theme'])) {
 </section>
 
 
+<main class="max-w-7xl mx-auto px-4 pt-12 pb-16">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <?php foreach ($articles as $row): ?>
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                <img src="./public/img/gallery/1.jpg" alt="Article Image" class="w-full h-48 object-cover">
+                <div class="p-6">
+                    <h2 class="text-2xl font-semibold"><?= htmlspecialchars($row['title']) ?></h2>
+                    <p class="text-gray-600"><?= htmlspecialchars($row['content']) ?></p>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    </div>
+</main>
+
