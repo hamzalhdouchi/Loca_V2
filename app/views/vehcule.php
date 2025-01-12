@@ -4,17 +4,15 @@ if (!$_SESSION) {
     header('Location: ./register.php');
     exit();
 }
-session_start();
 $userName = $_SESSION['user_name'];
 require __DIR__ . "/../controller/VehiculeController.php";
 require __DIR__ . "/../controller/CategorieController.php";
 $vehicule = new vehicule();
 
-$vehicules = $vehicule->getVehiculee();
-
+$vehicules = $vehicule->getVehiculees();
 $categorei = new categorie();
 
-$categoreis = $categorei->getcategorei();
+$categoreis = $categorei->getCategories();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['disponeble'])) {
     $despo = $_POST['despo'];
@@ -117,6 +115,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['Ajouter'])) {
 
 <body>
 
+<input type="checkbox" id="menu-toggle">
     <div class="sidebar">
         <div class="side-header">
             <h3>M<span>odern</span></h3>
@@ -129,7 +128,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['Ajouter'])) {
                 <small>Director</small>
             </div>
 
-            
             <div class="side-menu">
                 <ul>
                     <li>
@@ -145,7 +143,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['Ajouter'])) {
                         </a>
                     </li>
                     <li>
-                        <a href="./vehcule.php" class="active">
+                        <a href="./vehcule.php">
                             <span class="las la-car"></span>
                             <small>véhcule</small>
                         </a>
@@ -163,7 +161,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['Ajouter'])) {
                         </a>
                     </li>
                     <li>
-                        <a href="./themeAdmin.php">
+                        <a href="./themeAdmin.php" class="active">
                             <span class="las la-tasks"></span>
                             <small>Theme</small>
                         </a>
@@ -175,7 +173,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['Ajouter'])) {
                         </a>
                     </li>
                     <li>
-                        <a href="./tagAdmiun.php">
+                        <a href="./tagAdmiun.php" >
                             <span class="las la-tag"></span> <!-- Tag icon -->
                             <small>Tag</small>
                         </a>
@@ -185,8 +183,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['Ajouter'])) {
                 </ul>
             </div>
         </div>
-    </div> <input type="checkbox" id="menu-toggle">
-
+    </div>
 
     <div class="main-content">
 
@@ -222,20 +219,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['Ajouter'])) {
         </header>
 
 
-        <main>
+    <main>
 
-            <div class="page-header">
-                <h1>Dashboard</h1>
-                <small>Home / Dashboard</small>
+        <div class="page-header">
+            <h1>Dashboard</h1>
+            <small>Home / Dashboard</small>
+        </div>
+
+        <div class="page-content">
+
+            <div class="analytics">
+
+
             </div>
-
-
-            <div class="page-content">
-
-                <div class="analytics">
-
-
-
+        </div>
+    </main>
                 </div>
                 <div id="modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 hidden justify-center items-center z-50">
                     <!-- Contenu de la modal (formulaire) -->
@@ -517,38 +515,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['Ajouter'])) {
 
     </main>
     <script src="./assets/css/JS/scripte.js"></script>
-    <script>
-        const modal = document.getElementById('modal');
-
-        function openModalBtn() {
-
-
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-        };
-        modal.addEventListener('click', function(e) {
-            if (e.target === modal) {
-                modal.classList.remove('flex');
-                modal.classList.add('hidden');
-            }
-        });
-        const ModaLModifier = document.getElementById('mood');
-
-        function showModal(event) {
-            event.preventDefault();
-            console.log("showModal function triggered");
-
-
-            ModaLModifier.classList.toggle('hidden');
-            ModaLModifier.classList.add('flex');
-        };
-        ModaLModifier.addEventListener('click', function(e) {
-            if (e.target === ModaLModifier) {
-                ModaLModifier.classList.remove('flex');
-                ModaLModifier.classList.add('hidden');
-            }
-        });
-    </script>
 
 </body>
 

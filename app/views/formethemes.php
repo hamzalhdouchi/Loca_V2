@@ -4,7 +4,7 @@
 require __DIR__."/../controller/themes.php";
     $idT = $_GET['id_M'];
    $themes =new themes();
-    $result = $themes->ModiferTheme($idT);
+    $result = $themes->getThemeById($idT);
     
 
     if ($_SERVER["REQUEST_METHOD"] == 'POST' && isset($_POST['ModifierTheme'])) {
@@ -12,7 +12,7 @@ require __DIR__."/../controller/themes.php";
     $description = htmlspecialchars($_POST['description']);
     $date = htmlspecialchars($_POST['created_date']);
     $idT = intval($_POST['id_T']);
-    $themes->Modifer($idT,$name,$description,$date);
+    $themes->updateTheme($idT,$name,$description,$date);
     }
 ?>
 
@@ -40,7 +40,7 @@ require __DIR__."/../controller/themes.php";
     <div class="bg-gradient-to-br from-gray-100 to-gray-300 p-8 rounded-lg shadow-lg max-w-[50vw] mx-auto">
         <h2 class="text-2xl font-semibold text-center text-gray-800 mb-6">Ajouter une Theme</h2>
         <!-- Formulaire -->
-        <form action="./themeAdmin.php" method="POST" class="space-y-4 w-[40vw] h-[50vh] overflow-y-auto p-4 bg-gray-100 rounded-lg" enctype="multipart/form-data">
+        <form action="#" method="POST" class="space-y-4 w-[40vw] h-[50vh] overflow-y-auto p-4 bg-gray-100 rounded-lg" enctype="multipart/form-data">
             <!-- Nom -->
             <div id="formTheme">
                 <input type="hidden" name='id_T' value="<?= $idT ?>">

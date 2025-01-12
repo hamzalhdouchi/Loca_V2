@@ -17,7 +17,16 @@ class vehicule
         $db = new Database();
         $this->connect = $db->getdatabase();
     }
-
+    public function getVehiculees() {
+        $sql = "SELECT * 
+                FROM vehicules";
+                    
+        $stmt = $this->connect->prepare($sql);
+        $stmt->execute();
+    
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
     
     public function getVehiculee() {
         $sql = "SELECT * 
@@ -26,6 +35,7 @@ class vehicule
                     ON vehicules.categorie_id = categories.id_categories 
                 INNER JOIN evaluations 
                     ON evaluations.vehicule_id = vehicules.id_vehicules";
+
         $stmt = $this->connect->prepare($sql);
         $stmt->execute();
     
@@ -37,8 +47,6 @@ class vehicule
                 FROM vehicules 
                 INNER JOIN categories 
                     ON vehicules.categorie_id = categories.id_categories 
-                INNER JOIN evaluations 
-                    ON evaluations.vehicule_id = vehicules.id_vehicules 
                 LIMIT :limit OFFSET :offset";
     
         $stmt = $this->connect->prepare($sql);
@@ -65,6 +73,8 @@ class vehicule
         
         if ($stmt->execute([$despo, $id])) {  
             echo 'Mise à jour réussie';
+            header("Location: ../views/vehcule.php");
+        exit;
         } else {
             echo 'Échec de la mise à jour';
         }
@@ -78,25 +88,25 @@ class vehicule
 
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
 
-            if ($stmt->execute()) {
-                return "Ville supprimée avec succès !";
-            }else{
-                echo 'gnfdjggjkg';
-            }
+            $stmt->execute();
+                header("Location: ../views/vehcule.php");
+                exit;
+           
         } catch (PDOException) {
             return "Erreur  ";
         }
     }
 
     function AjouteMulti($idCount, $postData, $fileData) {
-        $categorie = $postData['categorie_id'];
+        
         $sql = "INSERT INTO vehicules (modele, description, prix, disponibilite, image, categorie_id) 
                 VALUES (:model, :description, :prix, :disponibilite, :image, :categorie_id)";
         
         for ($i = 0; $i <= $idCount; $i++) {
-            $model = trim($postData["model_$i"]);
+            $categorie = $postData['categorie_id'];
+            $model = $postData["model_$i"];
             $disponibilite = trim($postData["disponibilite_$i"]);
-            $description = trim($postData["description_$i"]);
+            $description = $postData["description_$i"];
             $prix = trim($postData["prix_$i"]);
             $imageFile = $fileData["image_$i"];
             
@@ -117,7 +127,12 @@ class vehicule
                     $stmt->bindParam(':image', $uniqueName, PDO::PARAM_STR);
                     $stmt->bindParam(':categorie_id', $categorie, PDO::PARAM_INT);
     
-                    $stmt->execute();
+                    if ($stmt->execute()) {
+
+                        echo 'ghgkg gfjdj gkdgkjgd kgjk';
+                        header("Location: ../views/vehcule.php");
+                exit;
+                    }
                 }
             }
         }

@@ -7,107 +7,143 @@ class Person
     protected $email;
     protected $password;
     protected $connect;
+
     public function __construct()
     {
         $db = new Database();
         $this->connect = $db->getdatabase();
     }
 
-    public function loginUser($email, $password)
-{
-    $this->email = htmlspecialchars($email);
+    public function setEmail($email)
+    {
+        $this->email = htmlspecialchars($email);
+    }
 
-    $stmt = $this->connect->prepare("SELECT * FROM utilisateurs WHERE email = :email");
-    $stmt->bindParam(':email', $this->email, PDO::PARAM_STR);
-    $stmt->execute();
-    
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
-    if ($user['block'] == 0) {
-            if ($user) {
-                
+    public function setPassword($password)
+    {
+        $this->password = $password;
+    }
+
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    public function getPassword()
+    {
+        return $this->password;
+    }
+
+    public function loginUser($email, $password)
+    {
+        $this->setEmail($email);
+
+        $stmt = $this->connect->prepare("SELECT * FROM utilisateurs WHERE email = :email");
+        $stmt->bindParam(':email', $this->email, PDO::PARAM_STR);
+        $stmt->execute();
+
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($user) {
+            if ($user['block'] == 0) {
+
                 if (md5($password) == $user['mot_de_passe']) {
                     $_SESSION["user_id"] = $user["id"];
                     $_SESSION["user_name"] = $user["nom"];
                     $_SESSION["user_role"] = $user["id_role"];
 
-                    var_dump($_SESSION);
-        
-                    echo "<script>alert('Login successful!');</script>";
+                    echo "<script>alert('Connexion réussie !');</script>";
                     if ($user["id_role"] == 2) {
-                        header("Location: ../views/them.php");
+                        header("Location: ../views/inde.php");
                     } elseif ($user["id_role"] == 1) {
                         header("Location: ../views/Dach.php");
                     }
-    
                     exit;
                 } else {
-                    echo "<script>alert('Invalid email or password.');</script>";
+                    echo "<script>alert('Email ou mot de passe invalide.');</script>";
                 }
             } else {
-                echo "<script>alert('No user found with this email.');</script>";
+                echo "<script>alert('Cet email est bloqué.');</script>";
             }
-        }else{
-            echo "<script>alert('this email is band.');</script>";
+        } else {
+            echo "<script>alert('Aucun utilisateur trouvé avec cet email.');</script>";
         }
-   
+    }
 }
 
-    }
 
 
 
 
 
-    class User extends Person
+class User extends Person
 {
     private $name;
     private $username;
-    private $role;
 
     public function __construct()
     {
-        parent::__construct(); 
+        parent::__construct();
     }
 
+    public function setName($name)
+    {
+        $this->name = htmlspecialchars($name);
+    }
 
-    public function readUser(){
+    public function setUsername($username)
+    {
+        $this->username = htmlspecialchars($username);
+    }
+
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    public function getUsername()
+    {
+        return $this->username;
+    }
+
+    public function readUser()
+    {
         $sql = "SELECT * FROM utilisateurs";
         $stmt = $this->connect->query($sql);
-        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        return $result;
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    public function setUser($name,$username, $email, $password)
-    {
-                $this->name = htmlspecialchars($name);
-                $this->username = htmlspecialchars($username);
-                $this->email = htmlspecialchars($email);
-                $this->password = md5($password);
-                    $stmt = $this->connect->prepare("INSERT INTO utilisateurs(nom, prenom , email, mot_de_passe) VALUES (?, ?, ?, ?)");
-                $stmt->execute([$this->name, $this->username, $this->email, $this->password]);
-                 try {
-                    $stmt->execute();
-                 } catch (PDOException) {
-                    echo 'gfdgf';
-                 }
-             }
-        
 
-             public function baneUser($block, $id) {
-                $sql = "UPDATE utilisateurs SET `block` = :block WHERE id = :id";
-            
-                $stmt = $this->connect->prepare($sql);
-            
-                $stmt->bindParam(':block', $block, PDO::PARAM_INT);
-                $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-            
-                if ($stmt->execute()) {
-                    echo 'User blocked successfully';
-                } else {
-                    echo 'Error blocking user';
-                }
-            }
-            
+    public function setUser($name, $username, $email, $password)
+    {
+        $this->setName($name);
+        $this->setUsername($username);
+        $this->setEmail($email);
+        $this->setPassword(md5($password));
+        $stmt = $this->connect->prepare("INSERT INTO utilisateurs(nom, prenom, email, mot_de_passe) VALUES (?, ?, ?, ?)");
+
+        try {
+            $stmt->execute([$this->getName(), $this->getUsername(), $this->getEmail(), $this->getPassword()]);
+            echo "<script>alert('Utilisateur ajouté avec succès.');</script>";
+        } catch (PDOException $e) {
+            echo "<script>alert('Erreur lors de l'ajout de l'utilisateur : {$e->getMessage()}');</script>";
+        }
     }
+
+    public function baneUser($block, $id)
+    {
+        $sql = "UPDATE utilisateurs SET `block` = :block WHERE id = :id";
+        $stmt = $this->connect->prepare($sql);
+
+        $stmt->bindParam(':block', $block, PDO::PARAM_INT);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+
+        if ($stmt->execute()) {
+            echo "<script>alert('Utilisateur mis à jour avec succès.');</script>";
+        } else {
+            echo "<script>alert('Erreur lors de la mise à jour.');</script>";
+        }
+    }
+}
 
     class Admin extends Person{
 

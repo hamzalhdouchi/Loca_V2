@@ -5,16 +5,16 @@ require __DIR__ . "/../controller/themes.php";
 
 $themes = new themes();
 
-$result = $themes->getTemes();
+$result = $themes->getThemes();
 
 if ($_SERVER["REQUEST_METHOD"] == 'POST' && isset($_POST['supprimer'])) {
     $id = intval($_POST['supprimerV']);
-    $themes->DeletTemes($id);
+    $themes->deleteTheme($id);
 }
 
 if ($_SERVER["REQUEST_METHOD"] == 'POST' && isset($_POST['AjouterTheme'])) {
     $cont = $_POST['cont'];
-    $themes->AjouterTheme($cont, $_POST);
+    $themes->addTheme($cont, $_POST);
 }
 ?>
 

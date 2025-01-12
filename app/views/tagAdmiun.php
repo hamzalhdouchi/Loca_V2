@@ -235,33 +235,33 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST' && isset($_POST['submitTag'])) {
         </main>
 
     </div>
-    <div id="modal" class="fixed hidden inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-50">
-    <!-- Content of the modal (form) -->
-    <div class="bg-gradient-to-br from-gray-100 to-gray-300 p-8 rounded-lg shadow-lg max-w-[50vw] mx-auto">
-        <h2 class="text-2xl font-semibold text-center text-gray-800 mb-6">Add Tag</h2>
-        <!-- Form -->
-        <form action="./tagAdmiun.php" method="POST" class="space-y-4 w-[40vw] h-[30vh] overflow-y-auto p-4 bg-gray-100 rounded-lg">
-            <!-- Tag Name Input -->
+    <div id="modal" class="flex hidden inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-50">
+        <!-- Content of the modal (form) -->
+        <div class="bg-gradient-to-br from-gray-100 to-gray-300 p-8 rounded-lg shadow-lg max-w-[50vw] mx-auto">
+            <h2 class="text-2xl font-semibold text-center text-gray-800 mb-6">Add Tag</h2>
+            <!-- Form -->
+            <form action="./tagAdmiun.php" method="POST" class="space-y-4 w-[40vw] h-[30vh] overflow-y-auto p-4 bg-gray-100 rounded-lg">
+                <!-- Tag Name Input -->
 
-             <div id="formTage">
-                <input type="hidden" name="id" value="0">
-             <div class="relative">
-                <label for="tag_name" class="text-xs font-medium text-gray-600">Tag Name</label>
-                <input type="text" name="tag_name_0" id="tag_name" class="block w-full mt-1 px-3 py-1 text-sm bg-white border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none focus:border-blue-500" placeholder="Enter tag name" required />
-            </div>
-             </div>
-           
+                <div id="formTage">
+                    <input type="hidden" name="id" value="0">
+                    <div class="relative">
+                        <label for="tag_name" class="text-xs font-medium text-gray-600">Tag Name</label>
+                        <input type="text" name="tag_name_0" id="tag_name" class="block w-full mt-1 px-3 py-1 text-sm bg-white border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none focus:border-blue-500" placeholder="Enter tag name" required />
+                    </div>
+                </div>
 
-            <!-- Submit Button -->
-            <div class="flex justify-around items-center">
-            <button type="button" onclick="MultiTage()" class="w-[10vw] py-2 text-sm text-white bg-lime-500 rounded-md shadow-md hover:bg-lime-600 focus:ring-2 focus:ring-lime-400 focus:outline-none font-bold"> + </button>
-                <button type="submit" name="submitTag" class="w-[10vw] py-2 text-sm text-white bg-blue-600 rounded-md shadow-md hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:outline-none">
-                    Submit
-                </button>
-            </div>
-        </form>
+
+                <!-- Submit Button -->
+                <div class="flex justify-around items-center">
+                    <button type="button" onclick="MultiTage()" class="w-[10vw] py-2 text-sm text-white bg-lime-500 rounded-md shadow-md hover:bg-lime-600 focus:ring-2 focus:ring-lime-400 focus:outline-none font-bold"> + </button>
+                    <button type="submit" name="submitTag" class="w-[10vw] py-2 text-sm text-white bg-blue-600 rounded-md shadow-md hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                        Submit
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 
 
 

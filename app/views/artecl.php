@@ -6,34 +6,41 @@ $tag = new Tags();
 
 $tags = $tag->getTags();
 
-var_dump($tags);
+
 
 $idT = $_GET['id'];
 
 $article = new Article();
 
-
-$itemsPerPage = 6;
-$currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+if ($_SERVER["REQUEST_METHOD"] == 'POST' && isset($_POST['page'])) {
+    $itemsPerPage = $_POST['select'];
+    $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 if ($currentPage < 1) $currentPage = 1;
 
 $limit = $itemsPerPage;
 $offset = ($currentPage - 1) * $itemsPerPage;
 
-$articles = $article->getArticleWithTags($limit, $offset);
+$articles = $article->getArticleWithTags($limit, $offset,$idT);
 
-$totalArticles = $article->countArticle(); 
+$totalArticles = $article->countArticle();
 $totalPages = ceil($totalArticles / $itemsPerPage);
+}
 
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_car_theme'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_car_theme'])) {
     $idt = intval($_POST['idT']);
     $title = htmlspecialchars($_POST['car_title']);
     $content = htmlspecialchars($_POST['car_content']);
     $tags = $_POST['car_tags'];
-
     $image = $_FILES['car_image'];
-    $article->setArticle($idt, $title, $content, $image, $tags);
+
+    $article = new Article();
+
+    $article->setTitle($title);
+    $article->setContent($content);
+    $article->setTags($tags);
+    $article->setImages($image);
+
+    $article->setArticle($idt);
 }
 ?>
 
@@ -53,29 +60,38 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_car_theme'])) {
 <body class="bg-gray-50">
 
     <!-- Header -->
-    <header class="bg-blue-900 text-white py-3 px-6 shadow-md">
-        <div class="flex items-center justify-between">
-            <!-- Logo -->
-            <a href="./index.php" class="flex items-center">
-                <i class="fas fa-car-side text-2xl text-white mr-2"></i>
-
-                <h1 class="text-2xl font-bold tracking-wide">Car Blog</h1>
-            </a>
-
-            <!-- Navigation Links -->
-            <nav class="flex items-center space-x-6 text-sm font-medium">
-                <a href="./them.php" class="hover:text-yellow-400 transition-colors duration-200">Themes</a>
-                <a href="#about" class="hover:text-yellow-400 transition-colors duration-200">About</a>
-                <a href="#contact" class="hover:text-yellow-400 transition-colors duration-200">Contact</a>
-            </nav>
-
-            <!-- Call to Action Button -->
-            <a href="./inde.php" class="bg-yellow-500 text-blue-900 py-2 px-4 rounded-lg text-sm font-semibold hover:bg-yellow-600 transition-colors duration-300">
-                Explore Cars
-            </a>
+    <nav class="bg-white shadow-lg fixed w-full top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <a href="#" class="flex items-center">
+                        <i class="fas fa-car-side text-2xl text-blue-600 mr-2"></i>
+                        <span class="text-xl font-bold text-gray-800">AutoLoc</span>
+                    </a>
+                </div>
+                <div class="hidden md:flex items-center space-x-4">
+                    <a href="./inde.php" class="text-gray-600 hover:text-gray-900">
+                        <i class="fas fa-home mr-1"></i> Accueil
+                    </a>
+                    <a href="#" class="text-gray-600 hover:text-gray-900">
+                        <i class="fas fa-car mr-1"></i> Véhicules
+                    </a>
+                    <a href="./reservation.php" class="text-gray-600 hover:text-gray-900">
+                        <i class="fas fa-bookmark mr-1"></i> Réservations
+                    </a>
+                    <a href="./them.php" class="text-gray-600 hover:text-gray-900">
+                    <i class="fas fa-newspaper mr-1"></i>
+                    Blogs
+                        </a>
+                    <a href="./register.php"
+                        class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+                        <i class="fas fa-sign-in-alt mr-1"></i> Connexion
+                    </a>
+                  
+                </div>
+            </div>
         </div>
-    </header>
-
+    </nav>
 
     <!-- Hero Section -->
     <section class="relative bg-blue-900 text-white h-96">
@@ -103,14 +119,45 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_car_theme'])) {
         </div>
     </section>
 
+    <div class="flex flex-wrap justify-between items-center space-x-4 space-y-4 md:space-y-0 mb-6 p-4 bg-white shadow-lg rounded-lg border border-gray-200">
+    <!-- Entries Dropdown -->
+    <div class="flex items-center space-x-2">
+        <span class="font-semibold text-lg">Entries</span>
+        <select id="Tags" class="px-4 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" onchange="fetchArticles(this.value)">
+            <option value="" disabled selected>Tags</option>
+            <?php foreach ($tags as $row): ?>
+                <option value="<?= htmlspecialchars($row['id']) ?>"><?= htmlspecialchars($row['name']) ?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+
+    <!-- Browse Section -->
+    <div class="flex items-center space-x-4">
+        <form action="" method="POST">
+        <select name="select" class="px-4 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option value="" disabled>Page</option>
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="15">15</option>
+        </select>
+
+        <button type="submit" name="page" class="btn-add px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500 focus:outline-none transition duration-200">
+            Add record
+        </button>
+        </form>
+        <input type="search" id="searchInput" placeholder="Search" class="record-search px-4 py-2 rounded-lg border border-gray-300 text-sm w-64 focus:outline-none focus:ring-2 focus:ring-blue-500" oninput="searchArticle(this.value)">
+    </div>
+</div>
+
+
 
     <!-- Main Content -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-16" id="articles">
         <!-- Articles Grid -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div id="Tage_cards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
 
             <!-- Article Card -->
-            <!--  -->
+
             <?php foreach ($articles as $row): ?>
                 <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 flex flex-col">
                     <img src="./public/img/gallery/1.jpg" alt="Article Image" class="w-full h-48 object-cover">
@@ -136,8 +183,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_car_theme'])) {
         </div>
     </main>
 
-   <!-- Pagination -->
-   <div class="max-w-7xl mx-auto mt-8 px-4 pb-8">
+    <!-- Pagination -->
+    <div class="max-w-7xl mx-auto mt-8 px-4 pb-8">
         <div class="flex justify-center items-center space-x-2">
             <?php if ($currentPage > 1): ?>
                 <a href="?page=<?= $currentPage - 1 ?>" class="px-4 py-2 border rounded-md hover:bg-gray-100">Previous</a>
@@ -200,21 +247,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_car_theme'])) {
                 <!-- Tags Selection -->
                 <div class="relative">
                     <label for="car_tags" class="text-sm font-medium text-gray-700">Select Tags</label>
-                    <select
+                     <select
                         name="car_tags"
                         id="car_tags"
                         multiple
                         class="block w-full mt-1 px-4 py-2 text-sm bg-white border border-gray-300 rounded-md focus:ring-2 focus:ring-yellow-500 focus:outline-none focus:border-yellow-500">
                         <?php
-                        $selectedTags = isset($row['tags']) ? explode(',', $row['tags']) : [];
-                        foreach ($tags as $tag) {
-                            $isSelected = in_array($tag['name'], $selectedTags) ? 'selected' : '';
-                            echo '<option value="' . htmlspecialchars($tag['id']) . '" ' . $isSelected . '>' . htmlspecialchars($tag['name']) . '</option>';
-                        }
+                        $selectedTags =  explode(',', $row['tags']);
+                        foreach ($selectedTags as $tag) :
                         ?>
-                    </select>
+                            <option value="<?=htmlspecialchars($tag['id']) ?>" ><?=htmlspecialchars($tag['name']) ?></option>';
+                            <?php
+                        endforeach
+                        ?>
+                    </select> 
                     <p class="text-xs text-gray-500 mt-1">Hold Ctrl (or Command on Mac) to select multiple tags.</p>
-                </div>
+                </div> 
 
 
                 <!-- Submission Button -->
@@ -232,30 +280,144 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_car_theme'])) {
 
 
     <!-- Expanded Article Details (Hidden by default) -->
-
     <script>
-        function toggleArticleDetails() {
-            const details = document.getElementById('article-details');
-            details.classList.toggle('hidden');
-        };
-        const modal = document.getElementById('carModal');
+        function fetchArticles(tagId) {
+            
+            console.log(tagId);
 
-        function openModalBtn() {
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-        };
-        modal.addEventListener('click', function(e) {
-            if (e.target === modal) {
-                modal.classList.remove('flex');
-                modal.classList.add('hidden');
+            if (!tagId) {
+                document.getElementById('Tage_cards').innerHTML = '';
+                return;
             }
-        });
-    </script>
 
+            fetch(`./felterTag.php?tag=${tagId}`)
+                .then(response => {
+                    console.log(response)
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch articles');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const cardsContainer = document.getElementById('Tage_cards');
+                    cardsContainer.innerHTML = '';
+
+                    if (data && data.length > 0) {
+                        data.forEach(article => {
+                            const card = `
+                      <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 flex flex-col">
+                    <img src="./public/img/gallery/1.jpg" alt="Article Image" class="w-full h-48 object-cover">
+                    <div class="p-6 flex-1">
+                        <h2 class="text-2xl font-semibold  text-gray-900 mb-4">${article.title}</h2>
+                        <p class="text-gray-600 mb-4">${article.content}</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                           
+                                <span class="bg-blue-600 text-white text-xs font-semibold px-3 py-1 rounded-full">${article.tags}</span>
+                            
+                        </div>
+                    </div>
+                    <!-- Learn More Button pinned at the bottom of the card -->
+                    <div class="mt-auto p-4 border-t border-gray-200">
+                        <a href="./articleditels.php?id=<?= $row['id'] ?>" class="bg-blue-600 text-white text-sm font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors duration-300 w-full text-center block">
+                            Learn More
+                        </a>
+                    </div>
+                </div>
+                      `;
+                            cardsContainer.innerHTML += card;
+                        });
+                    } else {
+                        cardsContainer.innerHTML = '<p class="text-center">No articles found for this tag.</p>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching articles:', error);
+                    document.getElementById('Tage_cards').innerHTML = '<p class="text-center text-red-500">Error loading articles.</p>';
+                });
+        };
+
+
+        function searchArticle(query) {
+            console.log(query);
+
+            if (!query) {
+                document.getElementById('Tage_cards').innerHTML = '';
+                return;
+            }
+
+
+            fetch(`./searchArticle.php?query=${encodeURIComponent(query)}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch articles');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const cardsContainer = document.getElementById('Tage_cards');
+                    cardsContainer.innerHTML = '';
+
+                    if (data && data.length > 0) {
+                        data.forEach(article => {
+                            const card = `
+                            <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 flex flex-col">
+                                <img src="./public/img/gallery/1.jpg" alt="Article Image" class="w-full h-48 object-cover">
+                                <div class="p-6 flex-1">
+                                    <h2 class="text-2xl font-semibold text-gray-900 mb-4">${article.title}</h2>
+                                    <p class="text-gray-600 mb-4">${article.content}</p>
+                                    <div class="flex flex-wrap gap-2 mb-4">
+                                        <span class="bg-blue-600 text-white text-xs font-semibold px-3 py-1 rounded-full">${article.tags}</span>
+                                    </div>
+                                </div>
+                                <div class="mt-auto p-4 border-t border-gray-200">
+                                    <a href="./articleditels.php?id=${article.id}" class="bg-blue-600 text-white text-sm font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors duration-300 w-full text-center block">
+                                        Learn More
+                                    </a>
+                                </div>
+                            </div>
+                        `;
+                            cardsContainer.innerHTML += card;
+                        });
+                    } else {
+                        cardsContainer.innerHTML = '<p class="text-center">No articles found matching your search.</p>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching articles:', error);
+                    document.getElementById('Tage_cards').innerHTML = '<p class="text-center text-red-500">Error loading articles.</p>';
+                });
+        }
+
+        const modalS = document.getElementById('carModal');
+            function openModalBtn(){
+                modalS.classList.remove('hidden');
+                modalS.classList.add('flex');
+            };
+            modalS.addEventListener('click', function(e) {
+                if (e.target === modalS) {
+                    modalS.classList.remove('flex');
+                    modalS.classList.add('hidden');
+                }
+            });
+            const ModaLModifier = document.getElementById('mood');
+            function showModal(event) {
+                event.preventDefault();
+                console.log("showModal function triggered");
+                ModaLModifier.classList.toggle('hidden');
+                ModaLModifier.classList.add('flex');
+            };
+            ModaLModifier.addEventListener('click', function(e) {
+                if (e.target === ModaLModifier) {
+                    ModaLModifier.classList.remove('flex');
+                    ModaLModifier.classList.add('hidden');
+                }
+            });
+    </script>
+   
     <!-- Footer -->
-    <footer class="bg-blue-800 text-white py-6 text-center">
+    <!-- <footer class="bg-blue-800 text-white py-6 text-center">
         <p>&copy; 2025 Car Blog. All rights reserved.</p>
-    </footer>
+    </footer> -->
 
 </body>
 

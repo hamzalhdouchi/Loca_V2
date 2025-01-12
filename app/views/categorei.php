@@ -7,13 +7,13 @@ $categorei = new categorie();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['AjouterCa'])) {
     $id = $_POST['id_c'];
-    $categorei->ajoutCategorei($id, $_POST);
+    $categorei->ajoutCategorie($id, $_POST);
 }
-$result = $categorei->getcategorei();
+$result = $categorei->getCategories();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['supprimer'])) {
     
-    $categorei->deletecategorei($_POST['supprimerV']);
+    $categorei->deleteCategorie($_POST['supprimerV']);
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['modifier'])) {

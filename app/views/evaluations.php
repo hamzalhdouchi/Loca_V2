@@ -1,11 +1,11 @@
-<?php 
-require __DIR__."/../controller/AvisController.php";
+<?php
+require __DIR__ . "/../controller/AvisController.php";
 
 
 $avis = new avis();
 
 $evaluations = $avis->getavis();
- ?>
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -27,7 +27,7 @@ $evaluations = $avis->getavis();
 <body>
 
     <div class="sidebar">
-     <div class="side-header">
+        <div class="side-header">
             <h3>M<span>odern</span></h3>
         </div>
 
@@ -37,7 +37,7 @@ $evaluations = $avis->getavis();
                 <h4>David Green</h4>
                 <small>Art Director</small>
             </div>
-            
+
             <div class="side-menu">
                 <ul>
                     <li>
@@ -83,7 +83,7 @@ $evaluations = $avis->getavis();
                         </a>
                     </li>
                     <li>
-                        <a href="./tagAdmiun.php" >
+                        <a href="./tagAdmiun.php">
                             <span class="las la-tag"></span> <!-- Tag icon -->
                             <small>Tag</small>
                         </a>
@@ -93,8 +93,8 @@ $evaluations = $avis->getavis();
                 </ul>
             </div>
         </div>
-     </div>  <input type="checkbox" id="menu-toggle">
-  
+    </div> <input type="checkbox" id="menu-toggle">
+
 
     <div class="main-content">
 
@@ -138,74 +138,49 @@ $evaluations = $avis->getavis();
             </div>
 
 
-            <div class="page-content">
 
-                <div class="analytics">
-    </div>
-  
+            <div class="records table-responsive">
 
-    </div>
+                <div>
+                    <table width="100%">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th><span class="las la-sort"></span> Name client</th>
+                                <th><span class="las la-sort"></span>Vehicule</th>
+                                <th><span class="las la-sort"></span>Avis</th>
+                                <th><span class="las la-sort"></span>comment</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            foreach ($evaluations as $row) {
+                            ?>
+                                <tr>
+                                    <td><?= htmlspecialchars($row['id_avis']) ?></td>
+                                    <td>
+                                        <div class="client">
 
-    <div class="records table-responsive">
+                                            <div class="client-info">
+                                                <h4><?= htmlspecialchars($row['nom']) ?></h4>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <h4><?= htmlspecialchars($row['modele']) ?></h4>
+                                    </td>
+                                    <td>
+                                        <h4><?= htmlspecialchars($row['note']) ?>/5</h4>
+                                    </td>
+                                    <td>
+                                        <h4><?= htmlspecialchars($row['comment']) ?></h4>
+                                    </td>
+                                </tr>
+                            <?php } ?>
+                        </tbody>
+                    </table>
+                </div>
 
-        <div class="record-header">
-            <div class="add">
-                <span>Entries</span>
-                <select name="" id="">
-                    <option value="">ID</option>
-                </select>
-                
-                <button type="button" onclick="openModalBtn()">Add category</button>
             </div>
-
-            <div class="browse">
-                <input type="search" placeholder="Search" class="record-search">
-                <select name="" id="">
-                    <option value="">Status</option>
-                </select>
-            </div>
-        </div>
-
-        <div>
-            <table width="100%">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th><span class="las la-sort"></span> Name client</th>
-                        <th><span class="las la-sort"></span>Vehicule</th>
-                        <th><span class="las la-sort"></span>Avis</th>
-                        <th><span class="las la-sort"></span>comment</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    foreach ($evaluations as $row) {
-                    ?>
-                        <tr>
-                            <td><?= htmlspecialchars($row['id_avis']) ?></td>
-                            <td>
-                                <div class="client">
-
-                                    <div class="client-info">
-                                        <h4><?= htmlspecialchars($row['nom']) ?></h4>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <h4><?= htmlspecialchars($row['modele']) ?></h4>
-                            </td>
-                            <td>
-                                <h4><?= htmlspecialchars($row['note']) ?>/5</h4>
-                            </td>
-                            <td>
-                                <h4><?= htmlspecialchars($row['comment']) ?></h4>
-                            </td>
-                        </tr>
-                    <?php } ?>
-                </tbody>
-            </table>
-        </div>
-
-    </div>
 
     </div>

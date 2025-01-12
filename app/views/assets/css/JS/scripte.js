@@ -74,27 +74,57 @@ function MultiCa(){
 }
 
 
-const modal = document.getElementById('modal');
+// const modal = document.getElementById('modal');
+
+// function openModalBtn() {
+
+
+//     modal.classList.remove('hidden');
+//     modal.classList.add('flex');
+// };
+// modal.addEventListener('click', function(e) {
+//     if (e.target === modal) {
+//         modal.classList.remove('flex');
+//         modal.classList.add('hidden');
+//     }
+
+//     function showModal(event) {
+// event.preventDefault(); // Prevents the form from reloading the page
+// const modal = document.getElementById('modalC');
+// modal.classList.remove('hidden');
+// modal.classList.add('flex');
+// }
+
+// });
+const modalS = document.getElementById('modal');
 
 function openModalBtn() {
 
 
-    modal.classList.remove('hidden');
-    modal.classList.add('flex');
+    modalS.classList.remove('hidden');
+    modalS.classList.add('flex');
 };
-modal.addEventListener('click', function(e) {
-    if (e.target === modal) {
-        modal.classList.remove('flex');
-        modal.classList.add('hidden');
+modalS.addEventListener('click', function(e) {
+    if (e.target === modalS) {
+        modalS.classList.remove('flex');
+        modalS.classList.add('hidden');
     }
+});
+const ModaLModifier = document.getElementById('mood');
 
-    function showModal(event) {
-event.preventDefault(); // Prevents the form from reloading the page
-const modal = document.getElementById('modalC');
-modal.classList.remove('hidden');
-modal.classList.add('flex');
-}
+function showModal(event) {
+    event.preventDefault();
+    console.log("showModal function triggered");
 
+
+    ModaLModifier.classList.toggle('hidden');
+    ModaLModifier.classList.add('flex');
+};
+ModaLModifier.addEventListener('click', function(e) {
+    if (e.target === ModaLModifier) {
+        ModaLModifier.classList.remove('flex');
+        ModaLModifier.classList.add('hidden');
+    }
 });
 let contTheme = 1;
 // Initialize contTheme globally
@@ -174,4 +204,112 @@ function MultiTage(){
 
     // Increment the counter
     contTage++;
+}
+
+
+function fetchArticles(tagId) {
+    
+    console.log(tagId);
+
+    if (!tagId) {
+        document.getElementById('Tage_cards').innerHTML = '';
+        return;
+    }
+
+    fetch(`./felterTag.php?tag=${tagId}`)
+        .then(response => {
+            console.log(response)
+            if (!response.ok) {
+                throw new Error('Failed to fetch articles');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const cardsContainer = document.getElementById('Tage_cards');
+            cardsContainer.innerHTML = '';
+
+            if (data && data.length > 0) {
+                data.forEach(article => {
+                    const card = `
+              <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 flex flex-col">
+            <img src="./public/img/gallery/1.jpg" alt="Article Image" class="w-full h-48 object-cover">
+            <div class="p-6 flex-1">
+                <h2 class="text-2xl font-semibold  text-gray-900 mb-4">${article.title}</h2>
+                <p class="text-gray-600 mb-4">${article.content}</p>
+                <div class="flex flex-wrap gap-2 mb-4">
+                   
+                        <span class="bg-blue-600 text-white text-xs font-semibold px-3 py-1 rounded-full">${article.tags}</span>
+                    
+                </div>
+            </div>
+            <!-- Learn More Button pinned at the bottom of the card -->
+            <div class="mt-auto p-4 border-t border-gray-200">
+                <a href="./articleditels.php?id=<?= $row['id'] ?>" class="bg-blue-600 text-white text-sm font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors duration-300 w-full text-center block">
+                    Learn More
+                </a>
+            </div>
+        </div>
+              `;
+                    cardsContainer.innerHTML += card;
+                });
+            } else {
+                cardsContainer.innerHTML = '<p class="text-center">No articles found for this tag.</p>';
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching articles:', error);
+            document.getElementById('Tage_cards').innerHTML = '<p class="text-center text-red-500">Error loading articles.</p>';
+        });
+};
+
+
+function searchArticles(query) {
+    console.log(query);
+
+    if (!query) {
+        document.getElementById('Tage_cards').innerHTML = '';
+        return;
+    }
+
+
+    fetch(`./searchArticle.php?query=${encodeURIComponent(query)}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to fetch articles');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const cardsContainer = document.getElementById('Tage_cards');
+            cardsContainer.innerHTML = '';
+
+            if (data && data.length > 0) {
+                data.forEach(article => {
+                    const card = `
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 flex flex-col">
+                        <img src="./public/img/gallery/1.jpg" alt="Article Image" class="w-full h-48 object-cover">
+                        <div class="p-6 flex-1">
+                            <h2 class="text-2xl font-semibold text-gray-900 mb-4">${article.title}</h2>
+                            <p class="text-gray-600 mb-4">${article.content}</p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-blue-600 text-white text-xs font-semibold px-3 py-1 rounded-full">${article.tags}</span>
+                            </div>
+                        </div>
+                        <div class="mt-auto p-4 border-t border-gray-200">
+                            <a href="./articleditels.php?id=${article.id}" class="bg-blue-600 text-white text-sm font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors duration-300 w-full text-center block">
+                                Learn More
+                            </a>
+                        </div>
+                    </div>
+                `;
+                    cardsContainer.innerHTML += card;
+                });
+            } else {
+                cardsContainer.innerHTML = '<p class="text-center">No articles found matching your search.</p>';
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching articles:', error);
+            document.getElementById('Tage_cards').innerHTML = '<p class="text-center text-red-500">Error loading articles.</p>';
+        });
 }

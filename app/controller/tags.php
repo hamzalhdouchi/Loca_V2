@@ -3,12 +3,23 @@
 require_once __DIR__."/../config/db.php";
 class Tags{
     private $connect;
-    
+    private $name;
     public function __construct()
     {
         $db = new Database();
         $this->connect = $db->getdatabase();
     }
+
+        public function getName(){
+        return $this->name;
+    }
+
+
+    public function setName($name){
+        $this->name = $name;
+    }
+
+    
 
     public function getTags(){
         $sql = "SELECT * FROM Tag";
@@ -25,24 +36,24 @@ class Tags{
         $stmt = $this->connect->prepare($sql);
         $stmt->bindParam(':id',$id);
         $stmt->execute();
+        header("Location: ../views/tagAdmiun.php");
+        exit;
     }
     
 
     public function AjouterTage($idCont, $postdata){
-        $sql = "INSERT INTO tag(name) VALUES (:name)";
+        $sql = "INSERT INTO tag(name) VALUES (:nameS)";
 
         for ($i = 0; $i <= $idCont; $i++) {
             $name = trim($postdata["tag_name_$i"]);
+            $this->setName($name);
             $stmt = $this->connect->prepare($sql);
-            $stmt->bindParam(':name', $name, PDO::PARAM_STR);
-            if ($stmt->execute()) {
-                echo 'fjfkffkjdfjfjfjfjdjkjjdfdfjjdfjdfjdf';
-            }else {
-                echo 'rf,f';
-            }
-            
+            $stmt->bindParam(':nameS', $this->name, PDO::PARAM_STR);
+            $stmt->execute();
         
         }
+        header("Location: ../views/tagAdmiun.php");
+        exit;
      }
 
      public function ModiferTage($id){

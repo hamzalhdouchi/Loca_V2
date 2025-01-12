@@ -8,13 +8,13 @@ require __DIR__ . "/../controller/ReservationController.php";
 require __DIR__ . "/../controller/CategorieController.php";
 
 $reservation = new reservation();
-global $id_vehicules;
+// global $id_vehicules;
 
 $vehicule = new vehicule();
 
 $categorei = new categorie();
 
-$typecategorei = $categorei->getcategorei();
+$typecategorei = $categorei->getCategories();
 
 
 $itemsPerPage = 9;
@@ -27,6 +27,7 @@ $offset = ($currentPage - 1) * $itemsPerPage;
 
 
 $vehicules = $vehicule->getVehicule($itemsPerPage, $offset);
+
 
 $totalVehicules = $vehicule->countVehicules();
 $totalPages = ceil($totalVehicules / $itemsPerPage);
@@ -116,10 +117,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['search'])) {
                     <a href="./reservation.php" class="text-gray-600 hover:text-gray-900">
                         <i class="fas fa-bookmark mr-1"></i> Réservations
                     </a>
+                    <a href="./them.php" class="text-gray-600 hover:text-gray-900">
+                    <i class="fas fa-newspaper mr-1"></i>
+                    Blogs
+                        </a>
                     <a href="./register.php"
                         class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
                         <i class="fas fa-sign-in-alt mr-1"></i> Connexion
                     </a>
+                  
                 </div>
             </div>
         </div>

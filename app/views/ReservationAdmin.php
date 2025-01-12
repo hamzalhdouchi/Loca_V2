@@ -226,23 +226,6 @@ $reservation = $reserv->getReservation();
 
     <div class="records table-responsive">
 
-        <div class="record-header">
-            <div class="add">
-                <span>Entries</span>
-                <select name="" id="">
-                    <option value="">ID</option>
-                </select>
-                
-                <button type="button" onclick="openModalBtn()">Add category</button>
-            </div>
-
-            <div class="browse">
-                <input type="search" placeholder="Search" class="record-search">
-                <select name="" id="">
-                    <option value="">Status</option>
-                </select>
-            </div>
-        </div>
 
         <div>
             <table width="100%">

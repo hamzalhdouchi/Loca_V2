@@ -3,33 +3,50 @@ session_start();
 
 if (!$_SESSION) {
     header('Location: ./register.php');
-exit();
+    exit();
 }
-require __DIR__."/../controller/AvisController.php";
-require __DIR__."/../controller/ReservationController.php";
+require __DIR__ . "/../controller/AvisController.php";
+require __DIR__ . "/../controller/ReservationController.php";
 
 $avis = new avis();
 
 $raiting = $avis->getavis();
-$reserv= new reservation();
+$reserv = new reservation();
 $id =  $_SESSION['user_id'];
 $reservation = $reserv->getReservationUSER($id);
 
+if ($reservation == null) {
+    header("Location: ../views/inde.php");
+}
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['anulR'])) {
+    $idR = $_POST['annule'];
+
+    $reserv->Annule($idR);
+}
 
 ?>
 
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reservation</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
+
 <body class="bg-gray-100">
-       <!-- Navigation -->
-       <nav class="bg-white shadow-lg fixed w-full top-0 z-50">
+
+
+   
+
+
+
+    <!-- Navigation
+    <nav class="bg-white shadow-lg fixed w-full top-0 z-50">
         <div class="max-w-7xl mx-auto px-4">
             <div class="flex justify-between items-center h-16">
                 <div class="flex items-center">
@@ -51,133 +68,159 @@ $reservation = $reserv->getReservationUSER($id);
                     <a href="./register.php"
                         class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
                         <i class="fas fa-sign-in-alt mr-1"></i> Connexion
-</a>
+                    </a>
                 </div>
             </div>
         </div>
-    </nav> 
-<div class="bg-gray-100 min-h-screen relative top-20">
-    <div class="max-w-[100vw] mx-auto bg-white shadow-md rounded-lg p-6">
-        <h1 class="text-2xl font-bold mb-6 text-gray-800">Mes Réservations</h1>
+    </nav> -->
 
-        <!-- Reservation Table -->
-        <table class="w-full text-left border-collapse">
-            <thead>
-                <tr>
-                    <th class="border-b pb-2 text-gray-700 font-medium">Véhicule</th>
-                    <th class="border-b pb-2 text-gray-700 font-medium">Date de réservation</th>
-                    <th class="border-b pb-2 text-gray-700 font-medium">Prix</th>
-                    <th class="border-b pb-2 text-gray-700 font-medium">Avis</th>
-                    <th class="border-b pb-2 text-gray-700 font-medium">Statut</th>
-                    <th class="border-b pb-2 text-gray-700 font-medium">Action</th>
-                </tr>
-            </thead>
-           
-            <tbody>
-            <?php
-            foreach($reservation as $row):
 
-                $idA = $row['vehicule_id'];
-                $result = $avis->getAVG($idA);
+    <section class=" relative bg-blue-900 text-white h-96">
+        <!-- Background Overlay -->
+        <div class="absolute inset-0 bg-black opacity-50"></div>
 
-                
-            ?>
-                <!-- Example Reservation -->
-                <tr class="hover:bg-gray-50">
-                    <td class="py-3 text-gray-800"><?= htmlspecialchars($row['modele']) ?></td>
-                    <td class="py-3 text-gray-600"><?= htmlspecialchars($row['date_reservation']) ?></td>
-                    <td class="py-3 text-gray-800"><?= htmlspecialchars($row['prix']) ?>DH</td>
-                    <td class="py-3">
-                        <td>
-                            <?php 
-                            if ($result == 1) {
-                                ?>
-                                <i class="fas fa-star text-yellow-400">⭐</i>
-                                <?php
-                            }elseif($result == 2){
-                                ?>
-                                <i class="fas fa-star text-yellow-400">⭐⭐</i>
-                                <?php
-                            }elseif($result == 3){
-                                ?>
-                                <i class="fas fa-star text-yellow-400">⭐⭐⭐</i>
-                                <?php
-                            }elseif($result == 4){
-                                ?>
-                                <i class="fas fa-star text-yellow-400">⭐⭐⭐⭐</i>
-                                <?php
-                            }elseif($result == 5){
-                                ?>
-                                <i class="fas fa-star text-yellow-400">⭐⭐⭐⭐⭐</i>
-                                <?php
-                            }
-                            ?>
-                        </td>
-                    <td>
-                        <?php 
-                        if ($row['status'] == 0) {
-                            ?>
-                             <span class="bg-green-100 text-green-700 px-2 py-1 rounded-full text-sm">confirmer</span>
-                            <?php
-                        }elseif ($row['status'] == 1) {
-                            ?>
-                            <span class="bg-green-100 text-red-700 px-2 py-1 rounded-full text-sm">refeser</span>
-                           <?php
-                        }elseif($row['status'] == 2) {
-                            ?>
-                            <span class="bg-green-100 text-gray-700 px-2 py-1 rounded-full text-sm">en attent</span>
-                           <?php
-                        }
-                        ?>
-                       
-                    </td>
-                  
-                    <td class="py-3">
-                        <?php 
-                        if ($result == null) {
-                        ?>
-                        <form action="./formreservation.php" method="GET">
-                        <input type="hidden" name="id" value="<?= $row['id_vehicules'] ?>" />
-                        <button type="submit" class="bg-blue-600 text-white px-3 py-2 rounded-md hover:bg-blue-700">
-                            Ajouter une note
-                        </button>
-                    </form>
+        <!-- Background Image -->
+        <img src="./public/img/gallery/3.jpg" alt="Electric Car" class="w-full h-full object-cover">
 
-                        <?php
-                        }else{
-                            ?>
-                            <form action="./formreservation.php" method="GET">
-                            <input type="hidden" name="id" value="<?= $row['id_vehicules'] ?>" />
-                            <button type="submit" class="bg-blue-600 text-white px-3 py-2 rounded-md hover:bg-blue-700">
-                                Modifier une note
-                            </button>
-                        </form>
-    
-                            <?php
-                        }
-                        ?>
-                        <!-- Add Rating Button -->
+        <!-- Content -->
+        <div class="absolute inset-0 flex items-center justify-center text-center px-6 ">
+                <h2 class="text-4xl font-bold mb-4">Me Reservation</h2>
+
+        </div>
+    </section>
+
+
+    <div class="bg-gray-100 min-h-screen relative top-20">
+        <div class="max-w-[100vw] mx-auto bg-white shadow-md rounded-lg p-6">
+            <h1 class="text-2xl font-bold mb-6 text-gray-800">Mes Réservations</h1>
+
+            <!-- Reservation Table -->
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr>
+                        <th class="border-b pb-2 text-gray-700 font-medium">Véhicule</th>
+                        <th class="border-b pb-2 text-gray-700 font-medium">Date de réservation</th>
+                        <th class="border-b pb-2 text-gray-700 font-medium">Prix</th>
+                        <th class="border-b pb-2 text-gray-700 font-medium">Avis</th>
+                        <th class="border-b pb-2 text-gray-700 font-medium">Status</th>
+                        <th class="border-b pb-2 text-gray-700 font-medium">Action</th>
+                        <th class="border-b pb-2 text-gray-700 font-medium">Annulation</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <?php
+                    foreach ($reservation as $row):
+
+                        $idA = $row['vehicule_id'];
+                        $result = $avis->getAVG($idA);
                         
-                       
-                    </td>
-                </tr>
-                <?php 
-            endforeach
-            ?>
-                <!-- Add more rows as needed -->
-            </tbody>
-        </table>
-           
-        <!-- CTA Button -->
-        <div class="mt-6 text-center">
-            <a href="./inde.php" class="bg-blue-600 text-white px-4 py-2 rounded-md font-medium hover:bg-blue-700">
-                Réserver un autre véhicule
-            </a>
+
+                    ?>
+                        <!-- Example Reservation -->
+                        <tr class="hover:bg-gray-50">
+                            <td class="py-3 text-gray-800"><?= htmlspecialchars($row['modele']) ?></td>
+                            <td class="py-3 text-gray-600"><?= htmlspecialchars($row['date_reservation']) ?></td>
+                            <td class="py-3 text-gray-800"><?= htmlspecialchars($row['prix']) ?>DH</td>
+                            <td class="py-3">
+                                <?php
+                                if ($result == 1) {
+                                ?>
+                                    <i class="fas fa-star text-yellow-400">⭐</i>
+                                <?php
+                                } elseif ($result == 2) {
+                                ?>
+                                    <i class="fas fa-star text-yellow-400">⭐⭐</i>
+                                <?php
+                                } elseif ($result == 3) {
+                                ?>
+                                    <i class="fas fa-star text-yellow-400">⭐⭐⭐</i>
+                                <?php
+                                } elseif ($result == 4) {
+                                ?>
+                                    <i class="fas fa-star text-yellow-400">⭐⭐⭐⭐</i>
+                                <?php
+                                } elseif ($result == 5) {
+                                ?>
+                                    <i class="fas fa-star text-yellow-400">⭐⭐⭐⭐⭐</i>
+                                <?php
+                                }
+                                ?>
+                            </td>
+                            <td>
+                                <?php
+                                if ($row['status'] == 1) {
+                                ?>
+                                    <span class="bg-green-100 text-green-700 px-2 py-1 rounded-full text-sm">Confirmer</span>
+                                <?php
+                                } elseif ($row['status'] == 2) {
+                                ?>
+                                    <span class="bg-red-100 text-red-700 px-2 py-1 rounded-full text-sm">Refeser</span>
+                                <?php
+                                } elseif ($row['status'] == 0) {
+                                ?>
+                                    <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded-full text-sm">En attent</span>
+                                <?php
+                                }
+                                ?>
+
+                            </td>
+
+                            <td class="py-3">
+                                <?php
+                                if ($result == null) {
+                                ?>
+                                    <form action="./formreservation.php" method="GET">
+                                        <input type="hidden" name="id" value="<?= $row['id_vehicules'] ?>" />
+                                        <button type="submit" class="bg-blue-600 text-white px-3 py-2 rounded-md hover:bg-blue-700">
+                                            Ajouter une note
+                                        </button>
+                                    </form>
+
+                                <?php
+                                } else {
+                                ?>
+                                    <form action="./formreservation.php" method="GET">
+                                        <input type="hidden" name="id" value="<?= $row['id_vehicules'] ?>" />
+                                        <button type="submit" class="bg-blue-600 text-white px-3 py-2 rounded-md hover:bg-blue-700">
+                                            Modifier une note
+                                        </button>
+                                    </form>
+
+                                <?php
+                                }
+                                ?>
+
+
+
+                            </td>
+                            <td>
+                                <form action="" method="POST">
+                                    <input type="hidden" name="annule" value="<?= $row['id_reservation'] ?>" />
+                                    <button type="submit" name="anulR" class="bg-red-600 text-white px-3 py-2 rounded-md hover:bg-red-700">
+                                        annule
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    <?php
+                    endforeach
+                    ?>
+                    <!-- Add more rows as needed -->
+                </tbody>
+            </table>
+
+            <!-- CTA Button -->
+            <div class="mt-6 text-center">
+                <a href="./inde.php" class="bg-blue-600 text-white px-4 py-2 rounded-md font-medium hover:bg-blue-700">
+                    Réserver un autre véhicule
+                </a>
+            </div>
         </div>
     </div>
-</div>
 
 
 
 </body>
+
 </html>
