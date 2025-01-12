@@ -36,7 +36,6 @@ class Categorie {
 
     public function ajoutCategorie($idCont, $postdata) {
         $sql = "INSERT INTO categories(nom, description) VALUES (:name, :description)";
-            var_dump($idCont);
         for ($i = 0; $i <= $idCont; $i++) {
             $name = $postdata["nom_$i"];
             $description = $postdata["description_$i"];
@@ -83,7 +82,8 @@ class Categorie {
         $stmt->bindParam(':nom', $nom, PDO::PARAM_STR);
         $stmt->bindParam(':description', $description, PDO::PARAM_STR);
         if ($stmt->execute()) {
-            return "Catégorie mise à jour avec succès!";
+            header("Location: ../views/categorei.php");
+            exit;
         } else {
             return "Erreur lors de la mise à jour.";
         }

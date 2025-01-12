@@ -19,7 +19,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['supprimer'])) {
 if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['modifier'])) {
     $id = $_GET['id_M'];
     $results = $categorei->Getmodifier($id);
-    var_dump($results);
+
+    
     echo "<script>
         document.addEventListener('DOMContentLoaded', function() {
             const ModaLModifier = document.getElementById('ModaLModifier');
@@ -331,7 +332,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'  && isset($_POST['modification'])) {
             <!-- Form inside the modal -->
             <form action="" method="post">
                 <!-- Hidden Input -->
-                <input type="hidden" name="id" value="<?= isset($results['id_categories']) ?>">
+                <input type="hidden" name="id" value="<?= $id ?>">
 
                 <!-- Input: Nom -->
                 <div class="mb-6">
