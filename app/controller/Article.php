@@ -64,6 +64,16 @@ class Article
         return $Article;
     }
 
+    public function getArtecleForpag($idT){
+        $sql = "SELECT * FROM article WHERE theme_id = :id";
+        $stmt = $this->connect->prepare($sql);
+        $stmt->bindParam(':id', $idT, PDO::PARAM_INT);
+        $stmt->execute();
+
+        $Article = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $Article;
+    }
+
     public function Setstatus($status,$id){
         
         $sql = "UPDATE article SET status = ? WHERE id = ?";
@@ -106,9 +116,15 @@ class Article
     }
     
 
-    public function setArticle($idT)
+    public function setArticle($idT ,$title ,$content,$tags,$image)
     {
+        $this->setTitle($title);
+    $this->setContent($content);
+    $this->setTags($tags);
+    $this->setImages($image);
         if (isset($this->images) && $this->images['error'] === 0) {
+            
+
             $uploadDir = '../views/assets/img/';
             $uploadFile = $uploadDir . basename($this->images['name']);
 
@@ -124,16 +140,22 @@ class Article
                     $stmt->execute();
 
                     $articleId = $this->connect->lastInsertId();
+                    var_dump($this->tags);
+                    $this->tags = explode(',', $this->tags);
                     foreach ($this->tags as $tag) {
                         $sql = "INSERT INTO articletag (article_id, tag_id) VALUES (:article_id, :tag_id)";
                         $stmt = $this->connect->prepare($sql);
                         $stmt->bindParam(':article_id', $articleId);
                         $stmt->bindParam(':tag_id', $tag);
-                        $stmt->execute();
+                        if ($stmt->execute()) {
+                            echo "<script>alert('Article ajouter avec sucsses');</script>";
+                            header("Location: ../views/artecl.php?id=$idT");
+                            exit();
+                        };
+                       
                     }
 
-                    header("Location: ../views/artecl.php");
-                    exit();
+                   
                 } else {
                     echo "Failed to upload the image.";
                 }

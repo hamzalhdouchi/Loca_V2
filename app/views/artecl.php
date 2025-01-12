@@ -6,24 +6,26 @@ $tag = new Tags();
 
 $tags = $tag->getTags();
 
-
-
+$selectedTags = $tag->getTags();
 $idT = $_GET['id'];
 
 $article = new Article();
 
+$articles = $article->getArtecleForpag($idT);
+
 if ($_SERVER["REQUEST_METHOD"] == 'POST' && isset($_POST['page'])) {
+
     $itemsPerPage = $_POST['select'];
     $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-if ($currentPage < 1) $currentPage = 1;
+    if ($currentPage < 1) $currentPage = 1;
 
-$limit = $itemsPerPage;
-$offset = ($currentPage - 1) * $itemsPerPage;
+    $limit = $itemsPerPage;
+    $offset = ($currentPage - 1) * $itemsPerPage;
 
-$articles = $article->getArticleWithTags($limit, $offset,$idT);
+    $articles = $article->getArticleWithTags($limit, $offset, $idT);
 
-$totalArticles = $article->countArticle();
-$totalPages = ceil($totalArticles / $itemsPerPage);
+    $totalArticles = $article->countArticle();
+    $totalPages = ceil($totalArticles / $itemsPerPage);
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_car_theme'])) {
@@ -32,15 +34,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_car_theme'])) {
     $content = htmlspecialchars($_POST['car_content']);
     $tags = $_POST['car_tags'];
     $image = $_FILES['car_image'];
-
+    var_dump($tags);
     $article = new Article();
 
-    $article->setTitle($title);
-    $article->setContent($content);
-    $article->setTags($tags);
-    $article->setImages($image);
-
-    $article->setArticle($idt);
+    $article->setArticle($idt,$title ,$content,$tags,$image);
 }
 ?>
 
@@ -60,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_car_theme'])) {
 <body class="bg-gray-50">
 
     <!-- Header -->
-    <nav class="bg-white shadow-lg fixed w-full top-0 z-50">
+    <!-- <nav class="bg-white shadow-lg fixed w-full top-0 z-50">
         <div class="max-w-7xl mx-auto px-4">
             <div class="flex justify-between items-center h-16">
                 <div class="flex items-center">
@@ -91,7 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_car_theme'])) {
                 </div>
             </div>
         </div>
-    </nav>
+    </nav> -->
 
     <!-- Hero Section -->
     <section class="relative bg-blue-900 text-white h-96">
@@ -120,34 +117,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_car_theme'])) {
     </section>
 
     <div class="flex flex-wrap justify-between items-center space-x-4 space-y-4 md:space-y-0 mb-6 p-4 bg-white shadow-lg rounded-lg border border-gray-200">
-    <!-- Entries Dropdown -->
-    <div class="flex items-center space-x-2">
-        <span class="font-semibold text-lg">Entries</span>
-        <select id="Tags" class="px-4 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" onchange="fetchArticles(this.value)">
-            <option value="" disabled selected>Tags</option>
-            <?php foreach ($tags as $row): ?>
-                <option value="<?= htmlspecialchars($row['id']) ?>"><?= htmlspecialchars($row['name']) ?></option>
-            <?php endforeach; ?>
-        </select>
-    </div>
+        <!-- Entries Dropdown -->
+        <div class="flex items-center space-x-2">
+            <span class="font-semibold text-lg">Entries</span>
+            <select id="Tags" class="px-4 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" onchange="fetchArticles(this.value)">
+                <option value="" disabled selected>Tags</option>
+                <?php foreach ($tags as $row): ?>
+                    <option value="<?= htmlspecialchars($row['id']) ?>"><?= htmlspecialchars($row['name']) ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
 
-    <!-- Browse Section -->
-    <div class="flex items-center space-x-4">
-        <form action="" method="POST">
-        <select name="select" class="px-4 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-            <option value="" disabled>Page</option>
-            <option value="5">5</option>
-            <option value="10">10</option>
-            <option value="15">15</option>
-        </select>
+        <!-- Browse Section -->
+        <div class="flex items-center space-x-4">
+            <form action="" method="POST">
+                <select name="select" class="px-4 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="" disabled>Page</option>
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                </select>
 
-        <button type="submit" name="page" class="btn-add px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500 focus:outline-none transition duration-200">
-            Add record
-        </button>
-        </form>
-        <input type="search" id="searchInput" placeholder="Search" class="record-search px-4 py-2 rounded-lg border border-gray-300 text-sm w-64 focus:outline-none focus:ring-2 focus:ring-blue-500" oninput="searchArticle(this.value)">
+                <button type="submit" name="page" class="btn-add px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500 focus:outline-none transition duration-200">
+                    Add record
+                </button>
+            </form>
+            <input type="search" id="searchInput" placeholder="Search" class="record-search px-4 py-2 rounded-lg border border-gray-300 text-sm w-64 focus:outline-none focus:ring-2 focus:ring-blue-500" oninput="searchArticle(this.value)">
+        </div>
     </div>
-</div>
 
 
 
@@ -244,25 +241,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_car_theme'])) {
                         required />
                 </div>
 
-                <!-- Tags Selection -->
+                
                 <div class="relative">
                     <label for="car_tags" class="text-sm font-medium text-gray-700">Select Tags</label>
-                     <select
+                    <select
                         name="car_tags"
                         id="car_tags"
                         multiple
                         class="block w-full mt-1 px-4 py-2 text-sm bg-white border border-gray-300 rounded-md focus:ring-2 focus:ring-yellow-500 focus:outline-none focus:border-yellow-500">
                         <?php
-                        $selectedTags =  explode(',', $row['tags']);
-                        foreach ($selectedTags as $tag) :
+
+                        foreach ($selectedTags as $selectedTag) :
+                            
                         ?>
-                            <option value="<?=htmlspecialchars($tag['id']) ?>" ><?=htmlspecialchars($tag['name']) ?></option>';
-                            <?php
+                            <option value="<?= htmlspecialchars($selectedTag['id']) ?>"><?= htmlspecialchars($selectedTag['name']) ?></option>';
+                        <?php
                         endforeach
                         ?>
-                    </select> 
+                    </select>
                     <p class="text-xs text-gray-500 mt-1">Hold Ctrl (or Command on Mac) to select multiple tags.</p>
-                </div> 
+                </div>
 
 
                 <!-- Submission Button -->
@@ -282,7 +280,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_car_theme'])) {
     <!-- Expanded Article Details (Hidden by default) -->
     <script>
         function fetchArticles(tagId) {
-            
+
             console.log(tagId);
 
             if (!tagId) {
@@ -389,31 +387,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_car_theme'])) {
         }
 
         const modalS = document.getElementById('carModal');
-            function openModalBtn(){
-                modalS.classList.remove('hidden');
-                modalS.classList.add('flex');
-            };
-            modalS.addEventListener('click', function(e) {
-                if (e.target === modalS) {
-                    modalS.classList.remove('flex');
-                    modalS.classList.add('hidden');
-                }
-            });
-            const ModaLModifier = document.getElementById('mood');
-            function showModal(event) {
-                event.preventDefault();
-                console.log("showModal function triggered");
-                ModaLModifier.classList.toggle('hidden');
-                ModaLModifier.classList.add('flex');
-            };
-            ModaLModifier.addEventListener('click', function(e) {
-                if (e.target === ModaLModifier) {
-                    ModaLModifier.classList.remove('flex');
-                    ModaLModifier.classList.add('hidden');
-                }
-            });
+
+        function openModalBtn() {
+            modalS.classList.remove('hidden');
+            modalS.classList.add('flex');
+        };
+        modalS.addEventListener('click', function(e) {
+            if (e.target === modalS) {
+                modalS.classList.remove('flex');
+                modalS.classList.add('hidden');
+            }
+        });
+        const ModaLModifier = document.getElementById('mood');
+
+        function showModal(event) {
+            event.preventDefault();
+            console.log("showModal function triggered");
+            ModaLModifier.classList.toggle('hidden');
+            ModaLModifier.classList.add('flex');
+        };
+        ModaLModifier.addEventListener('click', function(e) {
+            if (e.target === ModaLModifier) {
+                ModaLModifier.classList.remove('flex');
+                ModaLModifier.classList.add('hidden');
+            }
+        });
     </script>
-   
+
     <!-- Footer -->
     <!-- <footer class="bg-blue-800 text-white py-6 text-center">
         <p>&copy; 2025 Car Blog. All rights reserved.</p>
